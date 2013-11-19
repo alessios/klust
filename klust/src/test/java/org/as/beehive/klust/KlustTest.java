@@ -8,6 +8,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.apache.commons.math3.ml.distance.DistanceMeasure;
@@ -104,17 +105,18 @@ public class KlustTest extends TestCase {
 	List<CentroidCluster<Point>> clust = kmpp
 		.cluster(Arrays.asList(points));
 	for (CentroidCluster<Point> cc : clust) {
-	    System.out
-		    .printf("Centroid %40s\n", formatAsBinary(cc.getCenter()));
+	    System.out.printf("Centr.\t %s\n", formatAsBinary(cc.getCenter()));
 
 	    for (Point p : cc.getPoints()) {
-		System.out.printf("\t -> %40s\n", formatAsBinary(p));
+		System.out.printf("\t %s\n", formatAsBinary(p));
 	    }
+	    System.out.println();
 	}
     }
 
     private String formatAsBinary(Clusterable p) {
 
-	return Long.toBinaryString(((long) p.getPoint()[0]));
+	return StringUtils.leftPad(
+		Long.toBinaryString(((long) p.getPoint()[0])), 64, '0');
     }
 }
