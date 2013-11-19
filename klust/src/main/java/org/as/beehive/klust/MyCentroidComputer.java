@@ -8,7 +8,7 @@ public class MyCentroidComputer implements CentroidComputer<Point> {
 
     @Override
     public Clusterable centroidOf(Collection<Point> points, int dimension) {
-	final double[] centroid = new double[48];
+	final double[] centroid = new double[64];
 	for (final Point p : points) {
 	    long l = p.getValue();
 	    int i = 0;

@@ -41,13 +41,14 @@ public class KlustTest extends TestCase {
     public void testKM() {
 	MyDistanceMeasure measure = new MyDistanceMeasure();
 
-	Point[] points = new Point[] { new Point(255), new Point(1),
-		new Point(5), new Point(16), new Point(17), new Point(25),
-		new Point(64), new Point(67), new Point(122), new Point(1),
-		new Point(5), new Point(156), new Point(17), new Point(25),
-		new Point(64), new Point(67), new Point(22) };
+	int sample_size = 128;
+	Point[] points = new Point[sample_size];
+	for (int i = 0; i < points.length; i++) {
+	    points[i] = new Point(Math.round(Math.random()
+		    * (Long.MAX_VALUE >> 2) + Math.random() * 16000));
+	}
 
-	for (int i = 2; i < points.length / 2; i++) {
+	for (int i = 8; i < 9; i++) {
 	    System.out.println("Generating " + i + " clusters ");
 	    KMeansPlusPlusClusterer<Point> kmpp = new KMeansPlusPlusClusterer<Point>(
 		    i, 100000, measure);
