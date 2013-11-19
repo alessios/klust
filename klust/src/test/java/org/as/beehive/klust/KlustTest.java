@@ -40,8 +40,6 @@ public class KlustTest extends TestCase {
 
     public void testKM() {
 	MyDistanceMeasure measure = new MyDistanceMeasure();
-	KMeansPlusPlusClusterer<Point> kmpp = new KMeansPlusPlusClusterer<Point>(
-		3, 100000, measure);
 
 	Point[] points = new Point[] { new Point(255), new Point(1),
 		new Point(5), new Point(16), new Point(17), new Point(25),
@@ -49,22 +47,28 @@ public class KlustTest extends TestCase {
 		new Point(5), new Point(156), new Point(17), new Point(25),
 		new Point(64), new Point(67), new Point(22) };
 
-	kmpp.setCentroidComputer(new MyCentroidComputer());
+	for (int i = 2; i < points.length / 2; i++) {
+	    System.out.println("Generating " + i + " clusters ");
+	    KMeansPlusPlusClusterer<Point> kmpp = new KMeansPlusPlusClusterer<Point>(
+		    i, 100000, measure);
+	    kmpp.setCentroidComputer(new MyCentroidComputer());
 
-	List<CentroidCluster<Point>> clust = kmpp
-		.cluster(Arrays.asList(points));
-	for (CentroidCluster<Point> cc : clust) {
-	    System.out.printf("Centr.\t %s\n",
-		    formatAsBinary((Point) cc.getCenter()));
+	    List<CentroidCluster<Point>> clust = kmpp.cluster(Arrays
+		    .asList(points));
+	    for (CentroidCluster<Point> cc : clust) {
+		System.out.printf("Centr.\t %s\n",
+			formatAsBinary((Point) cc.getCenter()));
 
-	    for (Point p : cc.getPoints()) {
-		System.out.println("\t "
-			+ formatAsBinary(p)
-			+ " "
-			+ measure.compute(cc.getCenter().getPoint(),
-				p.getPoint()));
+		for (Point p : cc.getPoints()) {
+		    System.out.println("\t "
+			    + formatAsBinary(p)
+			    + " "
+			    + measure.compute(cc.getCenter().getPoint(),
+				    p.getPoint()));
+		}
+		System.out.println();
+		System.out.println();
 	    }
-	    System.out.println();
 	}
     }
 
