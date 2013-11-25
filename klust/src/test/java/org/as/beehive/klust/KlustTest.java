@@ -38,6 +38,15 @@ public class KlustTest extends TestCase {
 	assertTrue(true);
     }
 
+    public void testMD2() {
+	MyDistanceMeasure2 md2 = new MyDistanceMeasure2();
+	long l = 1287586574l;
+	assertTrue(l == md2.rotateLeft(md2.rotateRight(l)));
+	assertTrue(md2.rotateRight(1l) == 0x8000000000000000l);
+	System.out.println(md2.rotateLeft(0x8000000000000000l));
+	assertTrue(md2.rotateLeft(0x8000000000000000l) == 1l);
+    }
+
     public void testKM() {
 	MyDistanceMeasure measure = new MyDistanceMeasure();
 
