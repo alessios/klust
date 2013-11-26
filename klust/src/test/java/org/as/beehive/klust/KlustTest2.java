@@ -15,6 +15,7 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.Clusterable;
+import org.apache.commons.math3.ml.distance.EarthMoversDistance;
 
 /**
  * Unit test for simple App.
@@ -87,7 +88,7 @@ public class KlustTest2 extends TestCase {
 
 	System.out.println("Generating " + nclusters + " clusters ");
 	KMeansPlusPlusClusterer<DPoint> kmpp = new KMeansPlusPlusClusterer<DPoint>(
-		nclusters, 100000);
+		nclusters, 100000, new EarthMoversDistance());
 
 	List<CentroidCluster<DPoint>> clust = kmpp.cluster(Arrays
 		.asList(points));
@@ -97,6 +98,20 @@ public class KlustTest2 extends TestCase {
 
     private void dumpCluster(List<CentroidCluster<DPoint>> clust,
 	    boolean printDetails, boolean printHistogram) {
+
+	double[] elems = new double[clust.size()];
+	long tot = 0;
+	for (int i = 0; i < clust.size(); i++) {
+	    elems[i] = clust.get(i).getPoints().size();
+	    tot += elems[i];
+	}
+	for (int i = 0; i < clust.size(); i++) {
+	    elems[i] = elems[i] / tot;
+	}
+
+	freqHist(elems, 0.05);
+	System.out.println();
+
 	for (CentroidCluster<DPoint> cc : clust) {
 
 	    System.out.println("C: " + format(cc.getCenter()) + " #elems:"
@@ -104,7 +119,7 @@ public class KlustTest2 extends TestCase {
 	    if (printHistogram) {
 		System.out.println();
 
-		freqHist(cc.getCenter(), 0.10);
+		freqHist(cc.getCenter().getPoint(), 0.10);
 	    }
 	    if (printDetails) {
 		System.out.println();
@@ -118,11 +133,11 @@ public class KlustTest2 extends TestCase {
 	}
     }
 
-    private void freqHist(Clusterable center, double scale) {
+    private void freqHist(double[] points, double scale) {
 	for (long i = Math.round(Math.ceil(1 / scale)) - 1; i >= 0; i--) {
 	    StringBuilder sb = new StringBuilder("   ");
-	    for (double d : center.getPoint()) {
-		if (d >= scale * i) {
+	    for (double d : points) {
+		if (d > scale * i) {
 		    sb.append(" *  |");
 		} else {
 		    sb.append("    |");
