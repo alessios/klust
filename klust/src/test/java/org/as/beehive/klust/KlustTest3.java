@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,11 @@ import junit.framework.TestSuite;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.Clusterable;
+import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
+import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer.EmptyClusterStrategy;
+import org.apache.commons.math3.ml.distance.EarthMoversDistance;
+import org.apache.commons.math3.ml.distance.EuclideanDistance;
+import org.apache.commons.math3.random.JDKRandomGenerator;
 
 /**
  * Unit test for simple App.
@@ -47,7 +53,7 @@ public class KlustTest3 extends TestCase {
     protected List<String> loadData() {
 	try {
 	    LineNumberReader lnr = new LineNumberReader(new InputStreamReader(
-		    KlustTest3.class.getResourceAsStream("sample.txt")));
+		    KlustTest3.class.getResourceAsStream("sample2.txt")));
 	    String line;
 	    List<String> ret = new ArrayList<String>();
 	    while ((line = lnr.readLine()) != null) {
@@ -82,13 +88,19 @@ public class KlustTest3 extends TestCase {
 	return points;
     }
 
-    public void testKMPP() {
-	int nclusters = 10;
+    public void _testKMPP() {
+	int nclusters = 15;
 	DPoint[] points = getDataset2();
 
-	System.out.println("Generating " + nclusters + " clusters ");
+	// System.out.println("Generating " + nclusters + " clusters ");
+	// KMeansPlusPlusClusterer<DPoint> kmpp = new
+	// KMeansPlusPlusClusterer<DPoint>(
+	// nclusters, 1000000, new OlisticDistanceMeasure(),
+	// new JDKRandomGenerator(), EmptyClusterStrategy.LARGEST_VARIANCE);
+
 	KMeansPlusPlusClusterer<DPoint> kmpp = new KMeansPlusPlusClusterer<DPoint>(
-		nclusters, 100000, new OlisticDistanceMeasure());
+		nclusters, 1000000, new OlisticDistanceMeasure(),
+		new JDKRandomGenerator(), EmptyClusterStrategy.LARGEST_VARIANCE);
 
 	List<CentroidCluster<DPoint>> clust = kmpp.cluster(Arrays
 		.asList(points));
@@ -96,16 +108,59 @@ public class KlustTest3 extends TestCase {
 
     }
 
+    public void testKMPP2() {
+	NumberFormat nf = NumberFormat.getInstance();
+	nf.setMinimumFractionDigits(2);
+	nf.setMaximumFractionDigits(2);
+	int nclusters = 15;
+	DPoint[] points = getDataset2();
+	OlisticDistanceMeasure od = new OlisticDistanceMeasure();
+	OlisticDistanceMeasure2 od2 = new OlisticDistanceMeasure2(
+		new OlisticDistanceMeasure2.MultiplierSequence() {
+
+		    @Override
+		    public double getMultiplier(int index) {
+			// TODO Auto-generated method stub
+			return Math.pow(index, -2);
+		    }
+		});
+	EuclideanDistance ed = new EuclideanDistance();
+	EarthMoversDistance emd = new EarthMoversDistance();
+	for (int i = 0; i < points.length; i++) {
+	    System.out.println();
+	    System.out.println("\t" + format(points[i]));
+	    for (int j = 0; j < points.length; j++) {
+
+		System.out.println("\t"
+			+ format(points[j])
+			+ "\t"
+			+ nf.format(ed.compute(points[i].getPoint(),
+				points[j].getPoint()))
+			+ "\t"
+			+ nf.format(emd.compute(points[i].getPoint(),
+				points[j].getPoint()))
+			+ "\t"
+			+ nf.format(od.compute(points[i].getPoint(),
+				points[j].getPoint()))
+			+ "\t"
+			+ nf.format(od2.compute(points[i].getPoint(),
+				points[j].getPoint())));
+
+	    }
+	}
+    }
+
     private void dumpCluster(List<CentroidCluster<DPoint>> clust) {
 	for (CentroidCluster<DPoint> cc : clust) {
 
-	    System.out.println("Centr. " + format(cc.getCenter()));
+	    System.out.println("Centr. " + format(cc.getCenter()) + " "
+		    + cc.getPoints().size());
 
-	    for (DPoint p : cc.getPoints()) {
-		System.out.println("\t " + format(p));
-	    }
-	    System.out.println();
-	    System.out.println();
+	    // for (DPoint p : cc.getPoints()) {
+	    // System.out.println("\t " + format(p));
+	    // }
+	    // System.out.println();
+	    // System.out.println();
 	}
     }
 

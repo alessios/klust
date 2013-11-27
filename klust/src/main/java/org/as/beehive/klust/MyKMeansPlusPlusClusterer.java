@@ -32,7 +32,7 @@ import org.apache.commons.math3.util.MathUtils;
  * @version $Id: KMeansPlusPlusClusterer.java 1461866 2013-03-27 21:54:36Z tn $
  * @since 3.2
  */
-public class KMeansPlusPlusClusterer<T extends Clusterable> extends
+public class MyKMeansPlusPlusClusterer<T extends Clusterable> extends
 	Clusterer<T> {
 
     protected CentroidComputer<T> centroidComputer = null;
@@ -86,7 +86,7 @@ public class KMeansPlusPlusClusterer<T extends Clusterable> extends
      * @param k
      *            the number of clusters to split the data into
      */
-    public KMeansPlusPlusClusterer(final int k) {
+    public MyKMeansPlusPlusClusterer(final int k) {
 	this(k, -1);
     }
 
@@ -105,7 +105,7 @@ public class KMeansPlusPlusClusterer<T extends Clusterable> extends
      *            the maximum number of iterations to run the algorithm for. If
      *            negative, no maximum will be used.
      */
-    public KMeansPlusPlusClusterer(final int k, final int maxIterations) {
+    public MyKMeansPlusPlusClusterer(final int k, final int maxIterations) {
 	this(k, maxIterations, new EuclideanDistance());
     }
 
@@ -124,7 +124,7 @@ public class KMeansPlusPlusClusterer<T extends Clusterable> extends
      * @param measure
      *            the distance measure to use
      */
-    public KMeansPlusPlusClusterer(final int k, final int maxIterations,
+    public MyKMeansPlusPlusClusterer(final int k, final int maxIterations,
 	    final DistanceMeasure measure) {
 	this(k, maxIterations, measure, new JDKRandomGenerator());
     }
@@ -146,7 +146,7 @@ public class KMeansPlusPlusClusterer<T extends Clusterable> extends
      * @param random
      *            random generator to use for choosing initial centers
      */
-    public KMeansPlusPlusClusterer(final int k, final int maxIterations,
+    public MyKMeansPlusPlusClusterer(final int k, final int maxIterations,
 	    final DistanceMeasure measure, final RandomGenerator random) {
 	this(k, maxIterations, measure, random,
 		EmptyClusterStrategy.LARGEST_VARIANCE);
@@ -168,7 +168,7 @@ public class KMeansPlusPlusClusterer<T extends Clusterable> extends
      *            strategy to use for handling empty clusters that may appear
      *            during algorithm iterations
      */
-    public KMeansPlusPlusClusterer(final int k, final int maxIterations,
+    public MyKMeansPlusPlusClusterer(final int k, final int maxIterations,
 	    final DistanceMeasure measure, final RandomGenerator random,
 	    final EmptyClusterStrategy emptyStrategy) {
 	super(measure);

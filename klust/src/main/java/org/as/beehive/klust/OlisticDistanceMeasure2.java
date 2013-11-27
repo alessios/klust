@@ -1,9 +1,10 @@
 package org.as.beehive.klust;
 
 import org.apache.commons.math3.ml.distance.DistanceMeasure;
+import org.apache.commons.math3.ml.distance.EuclideanDistance;
 import org.apache.commons.math3.util.FastMath;
 
-public class OlisticDistanceMeasure implements DistanceMeasure {
+public class OlisticDistanceMeasure2 implements DistanceMeasure {
     private static final long serialVersionUID = 1L;
 
     double exp = -1;
@@ -30,21 +31,24 @@ public class OlisticDistanceMeasure implements DistanceMeasure {
 
     MultiplierSequence multiplierSequence;
 
-    public OlisticDistanceMeasure() {
+    public OlisticDistanceMeasure2() {
 	this.multiplierSequence = new DefaultMultiplierSequence();
     }
 
-    public OlisticDistanceMeasure(MultiplierSequence multiplierSequence) {
+    public OlisticDistanceMeasure2(MultiplierSequence multiplierSequence) {
 	this.multiplierSequence = multiplierSequence;
     }
+
+    EuclideanDistance ed = new EuclideanDistance();
 
     @Override
     public double compute(double[] x, double[] y) {
 	assert x.length == y.length;
 	int n = x.length;
+	double dist = ed.compute(x, y);
 	double simil = 0d;
 	for (int i = 0; i < n; i++) {
-	    for (int j = 0; j <= n / 2; j++) {
+	    for (int j = 1; j <= n / 2; j++) {
 		int jf = (i + j) % n;
 		int jb = (i - j + n) % n;
 		double m = multiplierSequence.getMultiplier(j);
@@ -54,7 +58,7 @@ public class OlisticDistanceMeasure implements DistanceMeasure {
 		}
 	    }
 	}
-
-	return simil;
+	simil = simil / 24;
+	return (dist - simil > 0d) ? dist - simil : 0;
     }
 }
