@@ -14,8 +14,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.distance.CanberraDistance;
 import org.apache.commons.math3.ml.distance.ChebyshevDistance;
 import org.apache.commons.math3.ml.distance.DistanceMeasure;
@@ -26,7 +24,7 @@ import org.apache.commons.math3.ml.distance.ManhattanDistance;
 /**
  * Unit test for simple App.
  */
-public class KlustTest3 extends TestCase {
+public class DistanceMeasureTest extends TestCase {
 
     Map<String, DistanceMeasure> measures = new HashMap<String, DistanceMeasure>();
 
@@ -36,7 +34,7 @@ public class KlustTest3 extends TestCase {
      * @param testName
      *            name of the test case
      */
-    public KlustTest3(String testName) {
+    public DistanceMeasureTest(String testName) {
 	super(testName);
 	measures.put("EUC", new EuclideanDistance());
 	measures.put("EMD", new EarthMoversDistance());
@@ -51,7 +49,7 @@ public class KlustTest3 extends TestCase {
      * @return the suite of tests being tested
      */
     public static Test suite() {
-	return new TestSuite(KlustTest3.class);
+	return new TestSuite(DistanceMeasureTest.class);
     }
 
     /**
@@ -61,10 +59,10 @@ public class KlustTest3 extends TestCase {
 	assertTrue(true);
     }
 
-    protected List<String> loadData() {
+    protected List<String> loadData(String filename) {
 	try {
 	    LineNumberReader lnr = new LineNumberReader(new InputStreamReader(
-		    KlustTest3.class.getResourceAsStream("sample2.txt")));
+		    DistanceMeasureTest.class.getResourceAsStream(filename)));
 	    String line;
 	    List<String> ret = new ArrayList<String>();
 	    while ((line = lnr.readLine()) != null) {
@@ -81,17 +79,8 @@ public class KlustTest3 extends TestCase {
 	return null;
     }
 
-    public Point[] getDataset() {
-	List<String> data = loadData();
-	Point[] points = new Point[data.size()];
-	for (int i = 0; i < points.length; i++) {
-	    points[i] = new Point(Long.parseLong(data.get(i), 2));
-	}
-	return points;
-    }
-
-    public DPoint[] getDataset2() {
-	List<String> data = loadData();
+    public DPoint[] getDataset(String filename) {
+	List<String> data = loadData(filename);
 	DPoint[] points = new DPoint[data.size()];
 	for (int i = 0; i < points.length; i++) {
 	    points[i] = new DPoint(data.get(i));
@@ -104,7 +93,7 @@ public class KlustTest3 extends TestCase {
 	nf.setMinimumFractionDigits(2);
 	nf.setMaximumFractionDigits(2);
 
-	DPoint[] points = getDataset2();
+	DPoint[] points = getDataset("sample2.txt");
 	String[] measuresKeys = measures.keySet().toArray(new String[] {});
 
 	for (int i = 0; i < points.length; i++) {
@@ -130,20 +119,6 @@ public class KlustTest3 extends TestCase {
 	}
     }
 
-    private void dumpCluster(List<CentroidCluster<DPoint>> clust) {
-	for (CentroidCluster<DPoint> cc : clust) {
-
-	    System.out.println("Centr. " + format(cc.getCenter().getPoint())
-		    + " " + cc.getPoints().size());
-
-	    // for (DPoint p : cc.getPoints()) {
-	    // System.out.println("\t " + format(p));
-	    // }
-	    // System.out.println();
-	    // System.out.println();
-	}
-    }
-
     public static String format(double[] points) {
 	StringBuilder sb = new StringBuilder();
 	for (double d : points) {
@@ -152,8 +127,4 @@ public class KlustTest3 extends TestCase {
 	return sb.toString();
     }
 
-    private String formatAsBinary(Point p) {
-
-	return StringUtils.leftPad(Long.toBinaryString(p.getValue()), 24, '0');
-    }
 }
