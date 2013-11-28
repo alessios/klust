@@ -48,7 +48,6 @@ public class OlisticDistanceMeasure2 implements DistanceMeasure {
 	double dist = ed.compute(x, y);
 	double simil = 0d;
 	for (int i = 0; i < n; i++) {
-	    simil = 0d;
 	    for (int j = 1; j <= n / 2; j++) {
 		int jf = (i + j) % n;
 		int jb = (i - j + n) % n;
@@ -58,11 +57,8 @@ public class OlisticDistanceMeasure2 implements DistanceMeasure {
 		    simil = simil + m * FastMath.abs(x[i] - y[jb]);
 		}
 	    }
-	    if (dist > simil / 24) {
-		dist = simil / 24;
-	    }
 	}
-
-	return dist;
+	simil = simil / 24;
+	return (dist - simil > 0d) ? dist - simil : 0;
     }
 }
