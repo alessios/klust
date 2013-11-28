@@ -77,9 +77,9 @@ public class DamerauLevenshteinAlgorithm {
 	 * Required to facilitate the premise to the algorithm that two swaps of
 	 * the same character are never required for optimality.
 	 */
-	if (2 * swapCost < insertCost + deleteCost) {
-	    throw new IllegalArgumentException("Unsupported cost assignment");
-	}
+	// if (2 * swapCost < insertCost + deleteCost) {
+	// throw new IllegalArgumentException("Unsupported cost assignment");
+	// }
 	this.deleteCost = deleteCost;
 	this.insertCost = insertCost;
 	this.replaceCost = replaceCost;

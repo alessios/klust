@@ -9,8 +9,9 @@ public class DPoint implements Clusterable {
 
     public DPoint(String d) {
 	this.d = d;
-	this.point = new double[24];
-	for (int i = 0; i < 24; i++) {
+	int l = d.length();
+	this.point = new double[l];
+	for (int i = 0; i < l; i++) {
 	    this.point[i] = (d.charAt(i) == '0') ? 0d : 1d;
 	}
     }

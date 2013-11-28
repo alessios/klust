@@ -11,6 +11,12 @@ public class DLDistanceMeasure implements DistanceMeasure {
 	dl = new DamerauLevenshteinAlgorithm(1, 1, 1, 1);
     }
 
+    public DLDistanceMeasure(int deleteCost, int insertCost, int replaceCost,
+	    int swapCost) {
+	dl = new DamerauLevenshteinAlgorithm(deleteCost, insertCost,
+		replaceCost, swapCost);
+    }
+
     private static final String format(double[] points) {
 	StringBuilder sb = new StringBuilder();
 	for (double d : points) {

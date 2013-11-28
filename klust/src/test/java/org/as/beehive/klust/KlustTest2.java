@@ -16,7 +16,6 @@ import junit.framework.TestSuite;
 import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
-import org.apache.commons.math3.ml.distance.EarthMoversDistance;
 
 /**
  * Unit test for simple App.
@@ -89,7 +88,7 @@ public class KlustTest2 extends TestCase {
 
 	System.out.println("Generating " + nclusters + " clusters ");
 	KMeansPlusPlusClusterer<DPoint> kmpp = new KMeansPlusPlusClusterer<DPoint>(
-		nclusters, 100000, new EarthMoversDistance());
+		nclusters, 100000, new DLDistanceMeasure());
 
 	List<CentroidCluster<DPoint>> clust = kmpp.cluster(Arrays
 		.asList(points));

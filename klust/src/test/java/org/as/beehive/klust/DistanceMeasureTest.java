@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.commons.math3.ml.distance.CanberraDistance;
-import org.apache.commons.math3.ml.distance.ChebyshevDistance;
 import org.apache.commons.math3.ml.distance.DistanceMeasure;
 import org.apache.commons.math3.ml.distance.EarthMoversDistance;
 import org.apache.commons.math3.ml.distance.EuclideanDistance;
@@ -39,8 +38,9 @@ public class DistanceMeasureTest extends TestCase {
 	measures.put("EUC", new EuclideanDistance());
 	measures.put("EMD", new EarthMoversDistance());
 	measures.put("LDM", new DLDistanceMeasure());
+	measures.put("LD2", new DLDistanceMeasure(5, 5, 5, 1));
 	measures.put("OLI", new OlisticDistanceMeasure());
-	measures.put("CHE", new ChebyshevDistance());
+	// measures.put("CHE", new ChebyshevDistance());
 	measures.put("CAN", new CanberraDistance());
 	measures.put("MAN", new ManhattanDistance());
     }
@@ -66,7 +66,11 @@ public class DistanceMeasureTest extends TestCase {
 	    String line;
 	    List<String> ret = new ArrayList<String>();
 	    while ((line = lnr.readLine()) != null) {
-		ret.add(line.substring(0, 24));
+		if (line.indexOf(' ') > 0) {
+		    ret.add(line.substring(0, line.indexOf(' ')));
+		} else {
+		    ret.add(line);
+		}
 	    }
 	    return ret;
 	} catch (FileNotFoundException e) {
