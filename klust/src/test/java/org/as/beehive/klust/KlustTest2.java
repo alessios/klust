@@ -15,6 +15,7 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.math3.ml.clustering.CentroidCluster;
 import org.apache.commons.math3.ml.clustering.Clusterable;
+import org.apache.commons.math3.ml.clustering.KMeansPlusPlusClusterer;
 import org.apache.commons.math3.ml.distance.EarthMoversDistance;
 
 /**

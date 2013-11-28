@@ -3,8 +3,6 @@ package blogspot.software_and_algorithms.stern_library.string;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.math3.ml.distance.DistanceMeasure;
-
 /* Copyright (c) 2012 Kevin L. Stern
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,7 +56,7 @@ import org.apache.commons.math3.ml.distance.DistanceMeasure;
  * 
  * @author Kevin L. Stern
  */
-public class DamerauLevenshteinAlgorithm implements DistanceMeasure {
+public class DamerauLevenshteinAlgorithm {
     private final int deleteCost, insertCost, replaceCost, swapCost;
 
     /**
@@ -160,9 +158,4 @@ public class DamerauLevenshteinAlgorithm implements DistanceMeasure {
 	return table[source.length() - 1][target.length() - 1];
     }
 
-    @Override
-    public double compute(double[] arg0, double[] arg1) {
-	// TODO Auto-generated method stub
-	return 0;
-    }
 }

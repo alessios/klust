@@ -59,7 +59,7 @@ public class KlustTest extends TestCase {
 
 	for (int i = 8; i < 9; i++) {
 	    System.out.println("Generating " + i + " clusters ");
-	    KMeansPlusPlusClusterer<Point> kmpp = new KMeansPlusPlusClusterer<Point>(
+	    MyKMeansPlusPlusClusterer<Point> kmpp = new MyKMeansPlusPlusClusterer<Point>(
 		    i, 100000, measure);
 	    kmpp.setCentroidComputer(new MyCentroidComputer());
 
